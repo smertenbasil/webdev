@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bermuda Triangle Survival Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #001f3f;
+            color: #ffffff;
+            text-align: center;
+            background-image: url(../imageshtml/backgroundwebapp.jpeg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+
+        }
+
+        #game-container {
+            margin: 50px auto;
+            width: 400px;
+            padding: 25px;
+            border: 3px solid #ffffff;
+            border-radius: 10px;
+            background-color:  #00205b;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: cyan;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 2em;
+        }
+
+        .decision-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #visual {
+            margin-top: 20px;
+        }
+
+        img {
+            width: 170px;
+            height: auto;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <a href="webdev.html" style="color:#ffffff; position: absolute; top: 20px; left: 20px; text-decoration:underline;"
+   onmouseover = "this.style.color = 'coral'" onmouseout="this.style.color = '#ffffff'" >Bermuda Triangle</a>
+    <div id="game-container">
+        <h1>Bermuda Triangle Survival Game</h1>
+        <div id="start-screen">
+            <p>You're lost in the Bermuda Triangle! What will you do?</p>
+            <button id="start-button">Start Game</button>
+        </div>
+        <div id="message"></div>
+
+        <div id="decision1" class="decision-container">
+            <p>Choose to gather food or gather water:</p>
+            <button id="gather-food">Gather Food</button>
+            <button id="gather-water">Gather Water</button>
+        </div>
+
+        <div id="decision2" class="decision-container">
+            <p>Choose to explore the sunken ship or the underwater cave:</p>
+            <button id="explore-ship">Explore Sunken Ship</button>
+            <button id="explore-cave">Explore Underwater Cave</button>
+        </div>
+
+        <div id="decision3" class="decision-container">
+            <p>You found the sunken ship! Will you face the aliens exploring the ship, or face the kraken that lives there?</p>
+            <button id="face-aliens">Face Aliens</button>
+            <button id="face-kraken">Face Kraken</button>
+        </div>
+
+        <div id="decision4" class="decision-container">
+            <p>You found the cave! Will you go deeper into the cave, or stay near the entrance?</p>
+            <button id="go-deeper">Go Deeper</button>
+            <button id="stay-entrance">Stay Near Entrance</button>
+        </div>
+
+        <div id="visual"></div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('start-button');
+
+        startButton.addEventListener('click', startGame);
+
+        document.getElementById('gather-food').addEventListener('click', () => {
+            showVisual('../imageshtml/skull.png', 'You died of dehydration!');
+            endGame();
+        });
+
+        document.getElementById('gather-water').addEventListener('click', () => {
+            showMessage('You found fresh water and will live a little longer!');
+            document.getElementById('decision1').style.display = 'none';
+            document.getElementById('decision2').style.display = 'block';
+        });
+
+        document.getElementById('explore-ship').addEventListener('click', () => {
+            showMessage('You found the sunken ship!');
+            document.getElementById('decision2').style.display = 'none';
+            document.getElementById('decision3').style.display = 'block';
+        });
+
+        document.getElementById('explore-cave').addEventListener('click', () => {
+            showMessage('You found the cave!');
+            document.getElementById('decision2').style.display = 'none';
+            document.getElementById('decision4').style.display = 'block';
+        });
+
+        document.getElementById('face-aliens').addEventListener('click', () => {
+            showVisual('../imageshtml/alien.png', 'You won! The aliens are friendly, and they take you home!');
+            endGame();
+        });
+
+        document.getElementById('face-kraken').addEventListener('click', () => {
+            showVisual('../imageshtml/kraken.png', 'The kraken ate you!');
+            endGame();
+        });
+
+        document.getElementById('go-deeper').addEventListener('click', () => {
+            showVisual('../imageshtml/portal3.png', 'You got sucked into a portal to another dimension!');
+            endGame();
+        });
+
+        document.getElementById('stay-entrance').addEventListener('click', () => {
+            showVisual('../imageshtml/seaserpent.png', 'A passing sea serpent ate you!');
+            endGame();
+        });
+
+        function startGame() {
+            resetGame();
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('decision1').style.display = 'block';
+        }
+
+        function showMessage(message) {
+            document.getElementById('message').textContent = message;
+        }
+
+        function showVisual(image, message) {
+            document.getElementById('visual').innerHTML = `<img src="${image}" alt="Visual"><p>${message}</p>`;
+        }
+
+        function endGame() {
+            disableButtons();
+            showRestartButton();
+        }
+
+        function disableButtons() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (button.id !== 'start-button') button.disabled = true;
+            });
+        }
+
+        function showRestartButton() {
+            const restartBtn = document.createElement('button');
+            restartBtn.textContent = 'Restart Game';
+            restartBtn.style.marginTop = '20px';
+            restartBtn.onclick = () => location.reload();
+            document.getElementById('game-container').appendChild(restartBtn);
+        }
+
+        function resetGame() {
+            document.getElementById('message').textContent = '';
+            document.getElementById('visual').innerHTML = '';
+            const decisions = document.querySelectorAll('.decision-container');
+            decisions.forEach(decision => decision.style.display = 'none');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
